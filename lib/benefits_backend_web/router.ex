@@ -18,6 +18,7 @@ defmodule BenefitsBackendWeb.Router do
 
     get "/", PageController, :index
     get "/benefits", BenefitsController, :index
+    get "/benefits/:id", BenefitsController, :show
   end
 
   # Other scopes may use custom stacks.
