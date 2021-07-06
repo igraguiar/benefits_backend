@@ -14,5 +14,14 @@
 
 </ul>
 
+<h2>Dependentes</h2>
+
+<ul>
+  <%= for dependant <- @employee.dependants do %>
+    <li><%= dependant.name %></li>
+    <li><%= dependant.cpf_number %></li>
+  <% end %>
+</ul>
+
 <span><%= link "Edit", to: Routes.employee_path(@conn, :edit, @employee) %></span>
 <span><%= link "Back", to: Routes.employee_path(@conn, :index) %></span>

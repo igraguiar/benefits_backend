@@ -18,7 +18,9 @@ defmodule BenefitsBackend.Employees do
 
   """
   def list_employees do
-    Repo.all(Employee)
+    Employee
+    |> Repo.all()
+    |> Repo.preload(:dependants)
   end
 
   @doc """
@@ -35,7 +37,11 @@ defmodule BenefitsBackend.Employees do
       ** (Ecto.NoResultsError)
 
   """
-  def get_employee!(id), do: Repo.get!(Employee, id)
+  def get_employee!(id) do
+    Employee
+    |> Repo.get!(id)
+    |> Repo.preload(:dependants)
+  end
 
   @doc """
   Creates a employee.
@@ -100,5 +106,101 @@ defmodule BenefitsBackend.Employees do
   """
   def change_employee(%Employee{} = employee, attrs \\ %{}) do
     Employee.changeset(employee, attrs)
+  end
+
+  alias BenefitsBackend.Employees.Dependant
+
+  @doc """
+  Returns the list of dependants.
+
+  ## Examples
+
+      iex> list_dependants()
+      [%Dependant{}, ...]
+
+  """
+  def list_dependants do
+    Repo.all(Dependant)
+  end
+
+  @doc """
+  Gets a single dependant.
+
+  Raises `Ecto.NoResultsError` if the Dependant does not exist.
+
+  ## Examples
+
+      iex> get_dependant!(123)
+      %Dependant{}
+
+      iex> get_dependant!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_dependant!(id), do: Repo.get!(Dependant, id)
+
+  @doc """
+  Creates a dependant.
+
+  ## Examples
+
+      iex> create_dependant(%{field: value})
+      {:ok, %Dependant{}}
+
+      iex> create_dependant(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_dependant(attrs \\ %{}) do
+    %Dependant{}
+    |> Dependant.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a dependant.
+
+  ## Examples
+
+      iex> update_dependant(dependant, %{field: new_value})
+      {:ok, %Dependant{}}
+
+      iex> update_dependant(dependant, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_dependant(%Dependant{} = dependant, attrs) do
+    dependant
+    |> Dependant.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a dependant.
+
+  ## Examples
+
+      iex> delete_dependant(dependant)
+      {:ok, %Dependant{}}
+
+      iex> delete_dependant(dependant)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_dependant(%Dependant{} = dependant) do
+    Repo.delete(dependant)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking dependant changes.
+
+  ## Examples
+
+      iex> change_dependant(dependant)
+      %Ecto.Changeset{data: %Dependant{}}
+
+  """
+  def change_dependant(%Dependant{} = dependant, attrs \\ %{}) do
+    Dependant.changeset(dependant, attrs)
   end
 end
